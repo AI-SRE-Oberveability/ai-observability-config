@@ -1,0 +1,15 @@
+# Telemetry contract 1.0.0
+
+Model mode: `deterministic-mock`. Schema: custom `lab.*` v1.0.0; no claim of GenAI semantic-convention compliance. Before a live model integration, pin a reviewed commit/release from the dedicated GenAI conventions repository and map/test attributes explicitly. Python SDK and instrumentation dependencies are pinned in `ai-agent-workloads/uv.lock`; there is no auto-instrumentation.
+
+Expected healthy trace: `POST /v1/ask` -> `agent.invoke` with children `model.plan`, `tool.retrieve`, `model.generate`; the tool client -> remote `POST /v1/retrieve` -> `retrieval.search`. Seven spans, two service identities, one trace ID, exact parent relationships. Tests check names, identities, multiplicity and edges; parent counts alone are insufficient. External valid W3C traceparent is preserved. Baggage is not propagated.
+
+Resource allowlist: `service.name`, `service.namespace`, `service.version`, `deployment.environment.name`, `lab.schema.version`. Span fields are declared by `ATTRIBUTES` in `telemetry.py` and mirrored in Collector configuration. Names, operations, outcomes and error types are fixed categories. Never attach request text, documents, arguments, response bodies, headers, secrets, user identifiers or exception messages. The SDK disables automatic exception events. Collector key filtering is defense in depth; it is not a general free-text or PII detector. New instrumentation must also keep span names, event/link fields and attribute values safe before export.
+
+Metrics: `lab.operation.calls` and `lab.operation.duration` for HTTP, agent, retrieval, model and tool operations; labels are only operation/outcome. No user, conversation, trace or question label. No token/cost series is emitted in mock mode. Actual input/output tokens are null in API results. Streaming time-to-first-token is not measured. Version/resource metadata is available on traces and the metrics resource envelope.
+
+Logs: controlled operational JSON with event, service, operation, outcome, trace ID and span ID. Access logging is disabled. No log pipeline is exported in this phase. Validation failures return generic responses without echoing submitted data.
+
+Limits: at most 3 workflow steps, 2 retrieval attempts, 1 retry with 20ms delay, 250ms individual HTTP timeout, caller-selected total 50–5000ms deadline, 512 input characters, 8192 response bytes and at most two bounded documents. This is not a live token-budget implementation. Cancellation is bounded; an already accepted read-only tool request may finish after caller timeout.
+
+Healthy and fault cohorts remain separate. Collector memory: 128 MiB threshold, 32 MiB spike allowance, 256-request export queue, two consumers, 15s retry ceiling, 200ms batches. Inspect accepted/refused/sent/failed/dropped data and queue metrics through the Collector internal metrics endpoint. Queues and Jaeger storage are in memory; stopping loses traces. Backend outages can lose telemetry and must be measured, not described as durable delivery.

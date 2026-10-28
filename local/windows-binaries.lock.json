@@ -1,0 +1,12 @@
+{
+  "collector": {
+    "version": "0.164.0",
+    "url": "https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v0.164.0/otelcol-contrib_0.164.0_windows_amd64.tar.gz",
+    "sha256": "1fb8163f9036126a1bdc59eab2d7aef4e6cda36f6c1e618f2359663cae8b0f4a"
+  },
+  "jaeger": {
+    "version": "2.22.0",
+    "url": "https://github.com/jaegertracing/jaeger/releases/download/v2.22.0/jaeger-2.22.0-windows-amd64.zip",
+    "sha256": "0fe3343c49e44e3c1e86846767286a3d7d16c8f89fff6e285e7e5a8bd34442c8"
+  }
+}
