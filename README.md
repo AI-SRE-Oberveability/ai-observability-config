@@ -1,6 +1,6 @@
 # Observability configuration
 
-Verified public repository: `javedkumail/ai-observability-config`; initial source publication tracked in the lab evidence.
+Verified public repository: `AI-SRE-Oberveability/ai-observability-config`; reviewed source is published under the organization; initial receipts remain in the lab evidence.
 
 Owns shared telemetry services and backend/monitoring configuration. `local/` contains pinned Collector/Jaeger definitions and verified-download metadata; `telemetry-contract.md` defines capture/identity expectations; `profiles/compatibility.md` keeps local, Managed and optional SaaS support distinct.
 
