@@ -23,6 +23,24 @@ def main():
         processors = pipeline["processors"]
         if processors.index("transform/allowlist") > processors.index("batch"):
             raise SystemExit("Capture allowlist must precede batching/export")
+    native = yaml.safe_load((ROOT / "local/native/collector.yaml").read_text())
+    jaeger = yaml.safe_load((ROOT / "local/native/jaeger.yaml").read_text())
+    endpoints = [
+        native["receivers"]["otlp"]["protocols"]["http"]["endpoint"],
+        native["exporters"]["otlp_grpc/jaeger"]["endpoint"],
+        native["exporters"]["prometheus"]["endpoint"],
+        jaeger["receivers"]["otlp"]["protocols"]["grpc"]["endpoint"],
+        jaeger["extensions"]["jaeger_query"]["http"]["endpoint"],
+        jaeger["extensions"]["jaeger_query"]["grpc"]["endpoint"],
+    ]
+    if any(not endpoint.startswith("127.0.0.1:") for endpoint in endpoints):
+        raise SystemExit("Native endpoints must bind/connect to loopback")
+    if native["processors"] != collector["processors"]:
+        raise SystemExit("Native profile must preserve the reviewed capture processors")
+    if set(jaeger["extensions"]) != {"jaeger_storage", "jaeger_query"}:
+        raise SystemExit(
+            "Native profile must not enable additional query/AI extensions"
+        )
     print("Pinned images, loopback ports and capture pipeline ordering verified")
 
 
