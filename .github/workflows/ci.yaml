@@ -43,3 +43,14 @@ jobs:
           -v "$RUNNER_TEMP/collector.yaml:/etc/otelcol/config.yaml:ro"
           otel/opentelemetry-collector-contrib:0.164.0@sha256:340c9ca6a36617084c6661bdc4f0fe92b7cda5a805d61673ec8db375fddc522b
           validate --config=/etc/otelcol/config.yaml
+      - name: Validate Jaeger chart profiles and negative cases
+        env:
+          CHART_INPUT_CACHE: ${{ runner.temp }}/chart-inputs
+        run: python scripts/check_jaeger_chart.py --restore --output "$RUNNER_TEMP/jaeger-check.json" --config-out "$RUNNER_TEMP/jaeger.yaml"
+      - name: Validate generated Jaeger config in the pinned distribution
+        run: >-
+          docker run --rm --network none --read-only --user 10001:10001
+          --cap-drop ALL --security-opt no-new-privileges
+          -v "$RUNNER_TEMP/jaeger.yaml:/etc/otelcol/config.yaml:ro"
+          cr.jaegertracing.io/jaegertracing/jaeger:2.22.0@sha256:836b967b5abcf1f7758066aa6b348619267a2f1459f72d472840570f9bd88a17
+          validate --config=/etc/otelcol/config.yaml
