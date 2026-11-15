@@ -1,0 +1,10 @@
+argo-cd:
+  enabled: false
+  crds:
+    install: false
+  configs:
+    secret:
+      createSecret: false
+  server:
+    service:
+      type: ClusterIP

@@ -1,0 +1,12 @@
+apiVersion: v2
+name: ai-platform-argocd
+description: Disabled-by-default dependency scaffold; no deployment acceptance
+type: application
+version: 0.1.0
+appVersion: "3.6.1"
+kubeVersion: ">=1.35.0-0 <1.36.0-0"
+dependencies:
+  - name: argo-cd
+    version: 10.18.0
+    repository: https://argoproj.github.io/argo-helm
+    condition: argo-cd.enabled

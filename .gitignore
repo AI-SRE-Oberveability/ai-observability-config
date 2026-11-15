@@ -9,3 +9,6 @@ __pycache__/
 *.pfx
 *.p12
 credentials.json
+
+# Restored dependency archives are verified caches, not source.
+charts/*/charts/*.tgz
