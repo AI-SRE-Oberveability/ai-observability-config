@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "enabled",
+    "profile",
+    "image"
+  ],
+  "properties": {
+    "enabled": {
+      "type": "boolean"
+    },
+    "profile": {
+      "enum": [
+        "dev",
+        "qa"
+      ]
+    },
+    "image": {
+      "type": "string",
+      "const": "otel/opentelemetry-collector-contrib:0.164.0@sha256:340c9ca6a36617084c6661bdc4f0fe92b7cda5a805d61673ec8db375fddc522b"
+    }
+  }
+}
