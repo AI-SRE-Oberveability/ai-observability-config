@@ -174,6 +174,7 @@ def check(cache=DEFAULT_CACHE, restore=False):
                     *extra,
                 ],
                 env=env,
+                check=False,
                 capture_output=True,
                 text=True,
                 encoding="utf-8",
