@@ -24,6 +24,10 @@ jobs:
       - run: ruff check scripts
       - run: ruff format --check scripts
       - run: python scripts/check_config.py
+      - name: Verify locked dependencies and offline disabled/ownership renders
+        env:
+          CHART_INPUT_CACHE: ${{ runner.temp }}/chart-inputs
+        run: python scripts/check_dependencies.py --restore
       - name: Validate Compose
         run: docker compose -f local/compose.yaml config --quiet
       - name: Validate pinned Collector configuration

@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "wrapper": "charts/argocd",
+  "deployable": false,
+  "reason": "Input/CRD ownership scaffold only; controller image digests, hardening, bootstrap and deployment gates remain pending",
+  "dependencies": [
+    {
+      "name": "argo-cd",
+      "version": "10.18.0",
+      "app_version": "3.6.1",
+      "repository": "https://argoproj.github.io/argo-helm",
+      "upstream_commit": "9348ef01b9d92d181ee7775abf5bc9c5870a93c7",
+      "archive_url": "https://github.com/argoproj/argo-helm/releases/download/argo-cd-10.18.0/argo-cd-10.18.0.tgz",
+      "archive_sha256": "9785aff67197402aab26d7ab3928ac8e611c292dacdee47f0e8ded16c2cd5a47",
+      "transitive_archive_sha256": {}
+    }
+  ]
+}
